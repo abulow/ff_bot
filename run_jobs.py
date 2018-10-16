@@ -5,7 +5,7 @@ from config.league_settings import *
 
 def run():
     scoreboard_start_times = [first_scoreboard_start_time + timedelta(weeks=i) for i in range(16) if (first_scoreboard_start_time + timedelta(weeks=i)) > datetime.now()]
-    week_nums = {x: idx+1 for idx, x in enumerate(scoreboard_start_times)}
+    week_nums = {x: str(idx+1) for idx, x in enumerate(scoreboard_start_times)}
     while datetime.now() < end_of_season:
         run_bot('transactions')
         first_remaining_scoreboard_start_time = scoreboard_start_times[0]

@@ -149,7 +149,7 @@ def parse_trade_team1_players(text):
     players = []
     for x in text.split(team1 + ' traded ')[1:]:
         players.append(x.split(',')[0])
-    return players
+    return ', '.join(players)
 
 # use for trades
 def parse_trade_team2_players(text):
@@ -157,7 +157,7 @@ def parse_trade_team2_players(text):
     players = []
     for x in text.split(team2 + ' traded ')[1:]:
         players.append(x.split(',')[0])
-    return players
+    return ', '.join(players)
 
 # use for adds and add/drops
 def parse_added_player(text):
@@ -232,10 +232,6 @@ def get_transactions_df(league_id, year):
         return None
 
     else:
-        try:
-            transactions_df = transactions_df.to_frame()
-        except:
-            pass
         transactions_df['Team1'] = transactions_df.apply(lambda x: parse_team1_abbrev(x.Description), axis=1)
         transactions_df['Team2'] = transactions_df.apply(lambda x: parse_team2_abbrev(x.Description) if 'Trade' in x.Transaction else np.NaN, axis=1)
         transactions_df['Team1_Traded_Players'] = transactions_df.apply(lambda x: parse_trade_team1_players(x.Description) if 'Trade' in x.Transaction else np.NaN, axis=1)

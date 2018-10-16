@@ -124,7 +124,7 @@ losing_wins = "losing_wins_template"
 losing_losses = "losing_losses_template"
 
 score_sentences = [
-winning_team + ' defeated ' + losing_team + ' ' + winning_score + '-' + losing_score + '. ' + losing_owner + ': "THEY ARE WHO WE THOUGHT THEY WERE," later adding that he "let them off the hook."',
+winning_team + ' defeated ' + losing_team + ' ' + winning_score + '-' + losing_score + '. ' + losing_owner + ' remarked, "THEY ARE WHO WE THOUGHT THEY WERE," later adding that his team "let them off the hook."',
 'To no one\'s surprise, ' + winning_team + ' dominated ' + losing_team + ' ' + winning_score + '-' + losing_score + '.',
 losing_team + ' was outclassed by ' + winning_team + ' ' + winning_score + '-' + losing_score + '. ' + winning_owner + ': "We can beat anybody in this league."',
 winning_team + ' took down ' + losing_team + ' ' + winning_score + '-' + losing_score + '. Nobody wants to face ' + winning_team + ' right now.',

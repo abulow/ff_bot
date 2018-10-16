@@ -9,7 +9,7 @@ from config.twitter_login import *
 def tweet_trade(api, row):
     if row.Transaction == 'Accepted Trade':
         sentence = choice(trade_sentences)
-        new_sentence = clean_sentence(sentence, team1=row.Team1, team2=row.Team2, player1=choice(row.Team1_Traded_Players), player2=choice(row.Team2_Traded_Players))
+        new_sentence = clean_sentence(sentence, team1=row.Team1, team2=row.Team2, player1=choice(row.Team1_Traded_Players.split(', ')), player2=choice(row.Team2_Traded_Players.split(', ')))
         try:
             api.update_status(new_sentence)
         except:
