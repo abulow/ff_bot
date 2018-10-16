@@ -16,6 +16,14 @@ def run():
         time.sleep(60)
 
 if __name__ == '__main__':
-    print('Run started, Timestamp: {:%Y-%m-%d %H:%M:%S}'.format(datetime.now()))
-    run()
-    print('Run stopped, Timestamp: {:%Y-%m-%d %H:%M:%S}'.format(datetime.now()))
+    while True:
+        try:
+            print('Run started, Timestamp: {:%Y-%m-%d %H:%M:%S}'.format(datetime.now()))
+            run()
+            print('Run stopped, Timestamp: {:%Y-%m-%d %H:%M:%S}'.format(datetime.now()))
+            break
+        except Exception as e:
+            print()
+            print('An error occured, Timestamp: {:%Y-%m-%d %H:%M:%S}'.format(datetime.now()))
+            print(e)
+            print()
