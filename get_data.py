@@ -232,6 +232,10 @@ def get_transactions_df(league_id, year):
         return None
 
     else:
+        try:
+            transactions_df = transactions_df.to_frame()
+        except:
+            pass
         transactions_df['Team1'] = transactions_df.apply(lambda x: parse_team1_abbrev(x.Description), axis=1)
         transactions_df['Team2'] = transactions_df.apply(lambda x: parse_team2_abbrev(x.Description) if 'Trade' in x.Transaction else np.NaN, axis=1)
         transactions_df['Team1_Traded_Players'] = transactions_df.apply(lambda x: parse_trade_team1_players(x.Description) if 'Trade' in x.Transaction else np.NaN, axis=1)
