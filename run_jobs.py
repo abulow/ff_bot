@@ -26,4 +26,5 @@ if __name__ == '__main__':
             print()
             print('An error occured, Timestamp: {:%Y-%m-%d %H:%M:%S}'.format(datetime.now()))
             print(e)
+            time.sleep(60)
             print()
