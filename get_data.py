@@ -4,7 +4,6 @@ from requests import get
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 import numpy as np
-from config.abbreviations import abbrevs
 
 # Helper
 def clean_owner(owner):
@@ -130,7 +129,7 @@ def get_faa_df(league_id):
     faa_df = pd.DataFrame.from_records(rows, columns=headers)
     # add remaining budgets
     budget_df = get_budget_df(league_id=league_id)
-    faa_df = faa_df.merge(budget_df[['Team', 'Remaining_Budget']], left_on='Team', right_on='Team', how='left')
+    faa_df = faa_df.merge(budget_df[['Team', 'Remaining_Budget']], on='Team', how='left')
     return faa_df
 
 ### Transaction Parsers 
@@ -146,17 +145,13 @@ def parse_team2_abbrev(text):
 # use for trades
 def parse_trade_team1_players(text):
     team1 = parse_team1_abbrev(text)
-    players = []
-    for x in text.split(team1 + ' traded ')[1:]:
-        players.append(x.split(',')[0])
+    players = [x.split(',')[0] for x in text.split(team1 + ' traded ')[1:]]
     return ', '.join(players)
 
 # use for trades
 def parse_trade_team2_players(text):
     team2 = parse_team2_abbrev(text)
-    players = []
-    for x in text.split(team2 + ' traded ')[1:]:
-        players.append(x.split(',')[0])
+    players = [x.split(',')[0] for x in text.split(team2 + ' traded ')[1:]]
     return ', '.join(players)
 
 # use for adds and add/drops
@@ -180,8 +175,14 @@ def parse_waiver_bid(text):
 
 ### End of transactions parsers
 
+def clean_abbrev(abbrev):
+    clean = abbrev.replace('stdy', 'JOSE')
+    clean = clean.replace('Slon', 'SLON')
+    clean = clean.replace('ARTE', 'AA')
+    return clean
+
 # Run every minute - Gives new transactions for current day through 1 month before. Returns None if no new transactions.
-def get_transactions_df(league_id, year):
+def get_transactions_df(league_id, year, abbrevs):
     # Get all transactions from current day through 1 month before
     current_date = datetime.now()
     current_date_string = current_date.strftime("%Y%m%d")
@@ -204,9 +205,9 @@ def get_transactions_df(league_id, year):
     rows = [x[:-1] for x in rows]
     for x in rows:
         x[0] = datetime.strptime(x[0] + str(year), '%a, %b %d%I:%M %p%Y')
-        x[1] = x[1].split('\xa0\xa0')[1].replace('(By LM)', '').replace(' (Waivers)', '').replace('stdy', 'JOSE').replace('Slon', 'SLON').replace('ARTE', 'AA')
-        x[2] = x[2].split(' ')[0] + ' ' + ' '.join(x[2].split(' ')[1:]).replace('*', '').replace('stdy', 'JOSE').replace('Slon', 'SLON').replace('ARTE', 'AA')
-        if 'trade' in x[1].lower():
+        x[1] = clean_abbrev(x[1].split('\xa0\xa0')[1].replace('(By LM)', '').replace(' (Waivers)', ''))
+        x[2] = clean_abbrev(x[2].split(' ')[0] + ' ' + ' '.join(x[2].split(' ')[1:]).replace('*', ''))
+        if 'Trade' in x[1]:
             for abbrev in abbrevs:
                 x[1] = x[1].replace(abbrev + ' ', '')
                 x[2] = x[2].replace(abbrev, abbrev + '. ')
@@ -217,9 +218,6 @@ def get_transactions_df(league_id, year):
                 x[1] = x[1].replace(abbrev + ' ', '')
                 x[2] = x[2].replace(abbrev, '. ' + abbrev)
             x[2] = x[2][2:] + '.'
-        if x[2][:3] == 'dy ':
-            x[2] = 'JOSE ' + x[2][3:]
-        x[2] = x[2].replace('AAAA', 'AA. AA')
     transactions_df = pd.DataFrame.from_records(rows, columns=headers)
     past_transactions_csv_fn = 'past_transactions.csv'
     
@@ -230,7 +228,6 @@ def get_transactions_df(league_id, year):
     transactions_df = transactions_df.drop_duplicates(keep=False)
     if transactions_df.empty:
         return None
-
     else:
         transactions_df['Team1'] = transactions_df.apply(lambda x: parse_team1_abbrev(x.Description), axis=1)
         transactions_df['Team2'] = transactions_df.apply(lambda x: parse_team2_abbrev(x.Description) if 'Trade' in x.Transaction else np.NaN, axis=1)

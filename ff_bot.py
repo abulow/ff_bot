@@ -2,8 +2,9 @@ import tweepy as tp
 from random import choice
 from get_data import *
 import sys
-from config.sentences import *
+from config.abbreviations import abbrevs
 from config.league_settings import *
+from config.sentences import *
 from config.twitter_login import *
 
 def tweet_trade(api, row):
@@ -61,7 +62,7 @@ def tweet_transaction(api, row):
         return tweet_drop(api, row)
 
 def tweet_transactions(api):
-    transactions_df = get_transactions_df(league_id, year)
+    transactions_df = get_transactions_df(league_id, year, abbrevs)
     if not transactions_df is None:
         transactions_df = transactions_df.sort_values('Datetime')
         for idx, row in transactions_df.iterrows():
