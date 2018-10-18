@@ -206,7 +206,7 @@ def get_transactions_df(league_id, year, abbrevs):
     for x in rows:
         x[0] = datetime.strptime(x[0] + str(year), '%a, %b %d%I:%M %p%Y')
         x[1] = clean_abbrev(x[1].split('\xa0\xa0')[1].replace('(By LM)', '').replace(' (Waivers)', ''))
-        x[2] = clean_abbrev(x[2].split(' ')[0] + ' ' + ' '.join(x[2].split(' ')[1:]).replace('*', ''))
+        x[2] = clean_abbrev(x[2].split(' ')[0]) + ' ' + clean_abbrev(' '.join(x[2].split(' ')[1:]).replace('*', ''))
         if 'Trade' in x[1]:
             for abbrev in abbrevs:
                 x[1] = x[1].replace(abbrev + ' ', '')
