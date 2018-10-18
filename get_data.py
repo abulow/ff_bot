@@ -56,82 +56,6 @@ def get_scoreboard_df(league_id, year, week):
     scoreboard_df = scoreboard_df[['Winning_' + col for col in cols] + ['Losing_' + col for col in cols]]
     return scoreboard_df
 
-# Run this on Tuesday (once standings have been updated, not sure what time ESPN does this)
-def get_standings_df(league_id, year):
-    url = 'http://games.espn.com/ffl/standings?leagueId=' + str(league_id) + '&seasonId=' + str(year)
-    r = get(url)
-    soup = BeautifulSoup(r.text, 'html.parser')
-    table = soup.select_one('#xstandTbl_div0')
-    trs = [tr for tr in table.find_all('tr')]
-    headers = [td.text.title() if td.text not in ['PF', 'PA'] else td.text for td in trs[1]]
-    headers = [header if header!='Div' else 'Overall' for header in headers]
-    headers[0] = 'Team'
-    headers.insert(1, 'Owner')
-    rows = [[td.text for td in tr] for tr in trs][2:]
-    for row in rows:
-        team_and_owner = row[0].title()
-        team, owner_raw = team_and_owner.split(' (')
-        owner = clean_owner(owner_raw.strip(')'))
-        row[0] = team
-        row.insert(1, owner)
-    standings_df = pd.DataFrame.from_records(rows, columns=headers)
-    return standings_df
-
-# Mostly a helper, could do a report using this once a week if you want to
-def get_budget_df(league_id):
-    url = 'http://games.espn.com/ffl/tools/waiverorder?leagueId=' + str(league_id)
-    r = get(url)
-    soup = BeautifulSoup(r.text, 'html.parser')
-    table = soup.select_one('table.tableBody')
-    trs = table.find_all('tr')
-    headers = ['Team', 'Owner', 'Position', 'Remaining_Budget']
-    rows = []
-    for tr in trs[2:]:
-        rows.append([])
-        for td in tr:
-            try:
-                rows[-1].append(td.text.title().replace('\xa0', ''))
-            except:
-                pass
-    budget_df = pd.DataFrame.from_records(rows, columns=headers)
-    return budget_df
-
-# Run every morning. Will return None if no Free Agent Auction moves were made for the day.
-def get_faa_df(league_id):
-    # Check date
-    current_date = datetime.now().strftime("%A, %B %d, %Y")
-    url = 'http://games.espn.com/ffl/waiverreport?leagueId=' + str(league_id)
-    r = get(url)
-    soup = BeautifulSoup(r.text, 'html.parser')
-    date = soup.select_one('em').text
-
-    if date != current_date:
-        return None
-
-    table = soup.select_one('table.tableBody')
-    trs = table.find_all('tr')
-    headers = ['Order', 'Team', 'Player', 'Bid', 'Result', 'Note']
-    rows = []
-    for tr in trs[2:]:
-        try:
-            elements = [x.strip('. ').replace('*', '') for x in tr.text.split('\n')]
-            elements.remove('')
-            elements[0] = '' if elements[0] == '\xa0' else elements[0]
-            elements[1] = elements[1].title()
-            trans_type = 'Added' if 'Added' in elements[3] else 'Unsuccessful'
-            elements.insert(-1, elements[-1].split(trans_type)[0])
-            elements.insert(-1, trans_type)
-            elements.insert(-1, elements[-1].split(trans_type)[1].replace('.', '').replace('\xa0', '').replace('Reason: ', ''))
-            elements = elements[:-1]
-            rows.append(elements)
-        except:
-            pass
-    faa_df = pd.DataFrame.from_records(rows, columns=headers)
-    # add remaining budgets
-    budget_df = get_budget_df(league_id=league_id)
-    faa_df = faa_df.merge(budget_df[['Team', 'Remaining_Budget']], on='Team', how='left')
-    return faa_df
-
 ### Transaction Parsers 
 
 # use for all
@@ -245,3 +169,84 @@ def get_transactions_df(league_id, year, abbrevs):
         past_transactions_df = pd.concat([partial_transactions_df, past_transactions_df])
         past_transactions_df.to_csv(past_transactions_csv_fn, index=False)
         return transactions_df
+
+# End of currently used functions
+
+# Not currently used
+# Run this on Tuesday (once standings have been updated, not sure what time ESPN does this)
+def get_standings_df(league_id, year):
+    url = 'http://games.espn.com/ffl/standings?leagueId=' + str(league_id) + '&seasonId=' + str(year)
+    r = get(url)
+    soup = BeautifulSoup(r.text, 'html.parser')
+    table = soup.select_one('#xstandTbl_div0')
+    trs = [tr for tr in table.find_all('tr')]
+    headers = [td.text.title() if td.text not in ['PF', 'PA'] else td.text for td in trs[1]]
+    headers = [header if header!='Div' else 'Overall' for header in headers]
+    headers[0] = 'Team'
+    headers.insert(1, 'Owner')
+    rows = [[td.text for td in tr] for tr in trs][2:]
+    for row in rows:
+        team_and_owner = row[0].title()
+        team, owner_raw = team_and_owner.split(' (')
+        owner = clean_owner(owner_raw.strip(')'))
+        row[0] = team
+        row.insert(1, owner)
+    standings_df = pd.DataFrame.from_records(rows, columns=headers)
+    return standings_df
+
+# Not currently used
+# Mostly a helper, could do a report using this once a week if you want to
+def get_budget_df(league_id):
+    url = 'http://games.espn.com/ffl/tools/waiverorder?leagueId=' + str(league_id)
+    r = get(url)
+    soup = BeautifulSoup(r.text, 'html.parser')
+    table = soup.select_one('table.tableBody')
+    trs = table.find_all('tr')
+    headers = ['Team', 'Owner', 'Position', 'Remaining_Budget']
+    rows = []
+    for tr in trs[2:]:
+        rows.append([])
+        for td in tr:
+            try:
+                rows[-1].append(td.text.title().replace('\xa0', ''))
+            except:
+                pass
+    budget_df = pd.DataFrame.from_records(rows, columns=headers)
+    return budget_df
+
+# Not currently used
+# Run every morning. Will return None if no Free Agent Auction moves were made for the day.
+def get_faa_df(league_id):
+    # Check date
+    current_date = datetime.now().strftime("%A, %B %d, %Y")
+    url = 'http://games.espn.com/ffl/waiverreport?leagueId=' + str(league_id)
+    r = get(url)
+    soup = BeautifulSoup(r.text, 'html.parser')
+    date = soup.select_one('em').text
+
+    if date != current_date:
+        return None
+
+    table = soup.select_one('table.tableBody')
+    trs = table.find_all('tr')
+    headers = ['Order', 'Team', 'Player', 'Bid', 'Result', 'Note']
+    rows = []
+    for tr in trs[2:]:
+        try:
+            elements = [x.strip('. ').replace('*', '') for x in tr.text.split('\n')]
+            elements.remove('')
+            elements[0] = '' if elements[0] == '\xa0' else elements[0]
+            elements[1] = elements[1].title()
+            trans_type = 'Added' if 'Added' in elements[3] else 'Unsuccessful'
+            elements.insert(-1, elements[-1].split(trans_type)[0])
+            elements.insert(-1, trans_type)
+            elements.insert(-1, elements[-1].split(trans_type)[1].replace('.', '').replace('\xa0', '').replace('Reason: ', ''))
+            elements = elements[:-1]
+            rows.append(elements)
+        except:
+            pass
+    faa_df = pd.DataFrame.from_records(rows, columns=headers)
+    # add remaining budgets
+    budget_df = get_budget_df(league_id=league_id)
+    faa_df = faa_df.merge(budget_df[['Team', 'Remaining_Budget']], on='Team', how='left')
+    return faa_df

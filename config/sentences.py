@@ -1,3 +1,5 @@
+twitter_char_limit = 280
+
 ### Transactions
 team1 = "team1_template"
 team2 = "team2_template"

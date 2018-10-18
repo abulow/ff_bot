@@ -10,7 +10,7 @@ This bot tweets out fantasy football updates. Follow at @analysteytan
 
 Instructions:
 =============
-1. Edit the files in the config directory to change twitter login settings, the abbreviations for the teams, the league settings and the sentence structure for the tweets.
+1. Edit the files in the config directory to change twitter login settings, the league settings and the sentence structure for the tweets.
 2. Execute run_jobs.py and leave running:
 
 
