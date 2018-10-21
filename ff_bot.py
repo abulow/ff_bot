@@ -8,7 +8,7 @@ from config.twitter_login import *
 
 def print_tweet_error(new_sentence):
     print()
-    print("There was an error printing the following sentence:")
+    print("There was an error tweeting the following sentence:")
     print(new_sentence)
     print()
 

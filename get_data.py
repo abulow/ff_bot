@@ -108,9 +108,9 @@ def clean_abbrev(abbrev):
 # Run every minute - Gives new transactions for current day through 1 month before. Returns None if no new transactions.
 def get_transactions_df(league_id, year, abbrevs):
     # Get all transactions from current day through 1 month before
-    current_date = datetime.now()
+    current_date = datetime.now().date()
     current_date_string = current_date.strftime("%Y%m%d")
-    last_month_date = current_date.date() - timedelta(days=30)
+    last_month_date = current_date - timedelta(days=30)
     last_month_date_string = last_month_date.strftime("%Y%m%d")
     url = 'http://games.espn.com/ffl/recentactivity?leagueId=' + str(league_id) + '&seasonId=' + str(year) + '&activityType=2&startDate=' + str(last_month_date_string) + '&endDate=' + str(current_date_string) + '&teamId=-1&tranType=-2'
     r = get(url)
@@ -145,8 +145,11 @@ def get_transactions_df(league_id, year, abbrevs):
     transactions_df = pd.DataFrame.from_records(rows, columns=headers)
     past_transactions_csv_fn = 'past_transactions.csv'
     
-    # Reference past transactions csv to see if any records are new
+    # Reference past transactions csv
     past_transactions_df = pd.read_csv(past_transactions_csv_fn, parse_dates=['Datetime'], index_col=False)
+    # Remove transactions more than 30 days old from past_transactions_df
+    past_transactions_df = past_transactions_df[past_transactions_df["Datetime"] >= last_month_date]
+    # Combine currently fetched transactions with past transactions
     transactions_df = pd.concat([transactions_df, past_transactions_df])
     # Only keep new transactions
     transactions_df = transactions_df.drop_duplicates(keep=False)
