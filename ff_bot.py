@@ -27,7 +27,7 @@ def tweet_trade(api, row):
 def tweet_add_drop_waiver(api, row):
     while True:
         sentence = choice(add_drop_waiver_sentences)
-        new_sentence = clean_sentence(sentence, team1=row.Team1, player1=row.Dropped_Player, player2=row.Added_Player, position1=row.Dropped_Player_Position, position2=row.Added_Player_Position, auction=row.Waiver_Bid)
+        new_sentence = clean_sentence(sentence, team1=row.Team1, player1=row.Dropped_Player, position1=row.Dropped_Player_Position, player2=row.Added_Player, position2=row.Added_Player_Position, auction=row.Waiver_Bid)
         if len(new_sentence) <= twitter_char_limit:
             break
     try:
@@ -38,7 +38,7 @@ def tweet_add_drop_waiver(api, row):
 def tweet_add_drop(api, row):
     while True:
         sentence = choice(add_drop_sentences)
-        new_sentence = clean_sentence(sentence, team1=row.Team1, player1=row.Dropped_Player, player2=row.Added_Player, position1=row.Dropped_Player_Position, position2=row.Added_Player_Position)
+        new_sentence = clean_sentence(sentence, team1=row.Team1, player1=row.Dropped_Player, position1=row.Dropped_Player_Position, player2=row.Added_Player, position2=row.Added_Player_Position)
         if len(new_sentence) <= twitter_char_limit:
             break
     try:

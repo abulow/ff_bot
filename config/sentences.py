@@ -3,8 +3,8 @@ twitter_char_limit = 280
 ### Transactions
 team1 = "team1_template"
 team2 = "team2_template"
-position1 = "position1_template"
 player1 = "player1_template"
+position1 = "position1_template"
 player2 = "player2_template"
 position2 = "position2_template"
 auction = "auction_template"
@@ -18,8 +18,10 @@ player1 + ' trade from ' + team1 + ' to ' + team2 + ' is official. Expected to t
 'Source: ' + team1 + ' have traded for ' + team2 + ' stud ' + player2 + '. ' + team1 + ' was also interested in him last year. More details available on ESPN fantasy app.', 
 ]
 
+# player2 is added player
+# player1 is dropped player
 add_drop_waiver_sentences = [
-'I can confirm earlier report by @JayGlazer that ' + team1 + ' will sign former ' + position2 + ' ' + player2 + ' to replace ' + player1 + ' on roster. They made the highest bid with ' + auction + '.',
+'I can confirm earlier report by @JayGlazer that ' + team1 + ' will sign ' + position2 + ' ' + player2 + ' to replace ' + player1 + ' on roster. They made the highest bid with ' + auction + '.',
 'The roster churn continues. ' + team1 + ' release ' + position1 + ' ' + player1 + ' to make room for ' + position2 + ' ' + player2 + '. ' + team1 + ' won with an aggressive bid of ' + auction + '.',
 position2 + ' ' + player2 + ' passes physical. ' + team1 + ' release ' + position1 + ' ' + player1 + ' to clear a roster spot. The final bid came out to ' + auction + '.' ,
 'Sources: Free-agent ' + position2 + ' ' + player2 + ' is working out for ' + team1 + ' today. Barring an unexpected poor workout, ' + team1 + ' will offer ' + player2 + ' a deal to sign and replace ' + player1 + '. They are planning to spend ' + auction + ' for the acquisition.' ,
@@ -55,8 +57,10 @@ team1 + ' officially place ' + position1 + ' ' + player1 + ' on waivers, sign ' 
 'RT @JasonLaCanfora: ' + team1 + ' was high on ' + player2 + '. He will sign there. ' + player1 + ' is the player to be released in the move. ' + team1 + ' spent ' + auction + ' on this roster move.',
 ]
 
+# player2 is added player
+# player1 is dropped player
 add_drop_sentences = [
-'I can confirm earlier report by @JayGlazer that ' + team1 + ' will sign former ' + position2 + ' ' + player2 + ' to replace ' + player1 + ' on roster.' ,
+'I can confirm earlier report by @JayGlazer that ' + team1 + ' will sign ' + position2 + ' ' + player2 + ' to replace ' + player1 + ' on roster.' ,
 'The roster churn continues. ' + team1 + ' release ' + position1 + ' ' + player1 + ' to make room for ' + position2 + ' ' + player2 + '.' ,
 position2 + ' ' + player2 + ' passes physical. ' + team1 + ' release ' + position1 + ' ' + player1 + ' to clear a roster spot.' ,
 'Sources: Free-agent ' + position2 + ' ' + player2 + ' is working out for ' + team1 + ' today. Barring an unexpected poor workout, ' + team1 + ' will offer ' + player2 + ' a deal to sign and replace ' + player1 + '.' ,
@@ -136,12 +140,12 @@ score_sentences = ['Week ' + week_num + ' Game Recap: ' + x for x in score_sente
 score_sentences = [x + ' ' + winning_team + ' improves to ' + winning_wins + '-' + winning_losses + '. ' + losing_team + ' falls to ' + losing_wins + '-' + losing_losses + '.' for x in score_sentences]
 ### End of Game Recaps
 
-def clean_sentence(sentence, team1='', team2='', player1='', player2='', position1='', position2='', auction='', week_num='', winning_team='', winning_owner='', winning_score='', winning_wins='', winning_losses='', losing_team='', losing_owner='', losing_score='', losing_wins='', losing_losses=''):
+def clean_sentence(sentence, team1='', team2='', player1='', position1='', player2='', position2='', auction='', week_num='', winning_team='', winning_owner='', winning_score='', winning_wins='', winning_losses='', losing_team='', losing_owner='', losing_score='', losing_wins='', losing_losses=''):
     new_sentence = sentence.replace("team1_template", team1)
     new_sentence = new_sentence.replace("team2_template", team2)
     new_sentence = new_sentence.replace("player1_template", player1)
-    new_sentence = new_sentence.replace("player2_template", player2)
     new_sentence = new_sentence.replace("position1_template", position1)
+    new_sentence = new_sentence.replace("player2_template", player2)
     new_sentence = new_sentence.replace("position2_template", position2)
     new_sentence = new_sentence.replace("auction_template", auction)
     new_sentence = new_sentence.replace("week_num_template", week_num)
