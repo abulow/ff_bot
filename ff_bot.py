@@ -12,6 +12,13 @@ def print_tweet_error(new_sentence):
     print(new_sentence)
     print()
 
+def print_tweet_length_limit_exceeded(new_sentence):
+    print()
+    new_sentence_length = len(new_sentence)
+    print("The following sentence was " + str(new_sentence_length) + " characters and was not tweeted:")
+    print(new_sentence)
+    print()
+
 def tweet_trade(api, row):
     if row.Transaction == 'Accepted Trade':
         while True:
@@ -19,6 +26,8 @@ def tweet_trade(api, row):
             new_sentence = clean_sentence(sentence, team1=row.Team1, team2=row.Team2, player1=choice(row.Team1_Traded_Players.split(', ')), player2=choice(row.Team2_Traded_Players.split(', ')))
             if len(new_sentence) <= twitter_char_limit:
                 break
+            else:
+                print_tweet_length_limit_exceeded(new_sentence)
         try:
             api.update_status(new_sentence)
         except:
@@ -30,6 +39,8 @@ def tweet_add_drop_waiver(api, row):
         new_sentence = clean_sentence(sentence, team1=row.Team1, player1=row.Dropped_Player, position1=row.Dropped_Player_Position, player2=row.Added_Player, position2=row.Added_Player_Position, auction=row.Waiver_Bid)
         if len(new_sentence) <= twitter_char_limit:
             break
+        else:
+            print_tweet_length_limit_exceeded(new_sentence)
     try:
         api.update_status(new_sentence)
     except:
@@ -41,6 +52,8 @@ def tweet_add_drop(api, row):
         new_sentence = clean_sentence(sentence, team1=row.Team1, player1=row.Dropped_Player, position1=row.Dropped_Player_Position, player2=row.Added_Player, position2=row.Added_Player_Position)
         if len(new_sentence) <= twitter_char_limit:
             break
+        else:
+            print_tweet_length_limit_exceeded(new_sentence)
     try:
         api.update_status(new_sentence)
     except:
@@ -52,6 +65,8 @@ def tweet_add(api, row):
         new_sentence = clean_sentence(sentence, team1=row.Team1, player1=row.Added_Player, position1=row.Added_Player_Position)
         if len(new_sentence) <= twitter_char_limit:
             break
+        else:
+            print_tweet_length_limit_exceeded(new_sentence)
     try:
         api.update_status(new_sentence)
     except:
@@ -63,6 +78,8 @@ def tweet_drop(api, row):
         new_sentence = clean_sentence(sentence, team1=row.Team1, player1=row.Dropped_Player, position1=row.Dropped_Player_Position)
         if len(new_sentence) <= twitter_char_limit:
             break
+        else:
+            print_tweet_length_limit_exceeded(new_sentence)
     try:
         api.update_status(new_sentence)
     except:
@@ -94,6 +111,8 @@ def tweet_score(api, row, week_num):
         new_sentence = clean_sentence(sentence, week_num=week_num, winning_team=row.Winning_Team, winning_owner=row.Winning_Owner, winning_score=row.Winning_Score, winning_wins=row.Winning_Wins, winning_losses=row.Winning_Losses, losing_team=row.Losing_Team, losing_owner=row.Losing_Owner, losing_score=row.Losing_Score, losing_wins=row.Losing_Wins, losing_losses=row.Losing_Losses)
         if len(new_sentence) <= twitter_char_limit:
             break
+        else:
+            print_tweet_length_limit_exceeded(new_sentence)
     try:
         api.update_status(new_sentence)
     except:

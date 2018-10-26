@@ -50,7 +50,10 @@ def test_sentences():
             continue
         for sentence in sentence_list:
             cleaned_sentence = clean_sentence(sentence, team1, team2, player1, position1, player2, position2, auction, week_num, winning_team, winning_owner, winning_score, winning_wins, winning_losses, losing_team, losing_owner, losing_score, losing_wins, losing_losses)
-            sentence_prompt = input(cleaned_sentence + " ")
+            print(cleaned_sentence)
+            print()
+            cleaned_sentence_length = len(cleaned_sentence)
+            sentence_prompt = input("Characters: " + str(cleaned_sentence_length) + " ")
             print()
             if sentence_prompt in exit_words + skip_words:
                 break
