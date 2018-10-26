@@ -18,13 +18,11 @@ trade_sentences = [
 'I have 9-1-1 dialed on my phone and am about to press call, because I have a ROBBERY to report. ' + team1 + ' just got ' + player2 + ' from ' + team2 + ' for only ' + player1 + '. Clearly illegal, likely to be vetoed.',
 'All signs point to collusion in the latest BTLMF trade. Apparently, ' + team1 + ' is willing to send ' + player1 + ' to ' + team2 + ' for ' + player2 + ' on his own free will. I call BS.',
 'BREAKING NEWS: POTENTIAL BLOCKBUSTER TRADE OF THE YEAR. ' + team1 + ' sends ' + player1 + ' to ' + team2 + ' in a deal involving ' + player2 + '. I did not think ' + team1 + ' had the huevos to pull this one off.',
-'IT\'S TRADING SZN Y\'ALL. ' + team1 + ' and ' + team2 + ' shake it up by swapping ' + player1 + ' for ' + player2 + '.',
-
 ]
 
 # player2 is added player
 # player1 is dropped player
-add_drop_waiver_sentences =[
+add_drop_waiver_sentences = [
 'After naming himself, \"The best ' + position1 + ' on the team,\" ' + player1 + ' has been waived. ' + team1 + ' spends ' + auction + ' to sign ' + player2 + ' in the corresponding move.',
 'I am HYPED up: ' + team1 + ' spends ' + auction + ' to sign ' + player2 + ' and release ' + player1 + '. #FantasyFootballIsTheOpiumOfTheMasses',
 'After finding out ' + team1 + ' spent ' + auction + ' to waive him for ' + player2 + ', ' + player1 + ' said, \"Every form of society has been based on the antagonism of oppressing and oppressed classes.\" Actually nvm that was Karl Marx.',
@@ -32,7 +30,6 @@ add_drop_waiver_sentences =[
 'Can\'t ask for a better birthday present: ' + player2 + ' signed to ' + team1 + '\'s roster. Unfortunately, it was actually ' + player1 + '\'s birthday, who was cut.',
 team1 + '\'s coach\'s message to ' + player2 + ' after signing him, \"It\'s time to earn your bread son.\" It seems like ' + player1 + ' only earned matzah this season, as he\'s been cut.',
 player1 + ' just texted me LIVID. He\'s been informed by ' + team1 + ' that he has been waived to make room for ' + player2 + '.',
-'i\'m at a abr right now because it izs late anbd i can tweet from wherevre li wmant. just wanted ot let you konow that ' + team1 + ' addedn ' + player2 + ', dropped ' + player1 + ' , and srpent ' + auction + ' on the movei.',
 'I really like ' + team1 + '\'s move to add ' + player2 + ' and drop ' + player1 + ' for ' + auction + '. But I\'m a bot who tweets pre-written template sentences, so what do I know?',
 'This past weekend, ' + team1 + '\'s owner attended ' + player1 + '\'s housewarming party for his new multi-million dollar home. Now that property is already back on the market after ' + player1 + ' was cut for ' + player2 + ' today.',
 team1 + '\'s decision to add ' + player2 + ' and drop ' + player1 + ' really does improve their roster. Whether to says more about ' + player2 + ' or their roster is up to you.',
