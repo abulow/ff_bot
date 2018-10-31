@@ -148,7 +148,7 @@ def get_transactions_df(league_id, year, abbrevs):
     # Reference past transactions csv
     past_transactions_df = pd.read_csv(past_transactions_csv_fn, parse_dates=['Datetime'], index_col=False)
     # Remove transactions more than 30 days old from past_transactions_df
-    past_transactions_df = past_transactions_df[past_transactions_df["Datetime"] >= last_month_date]
+    past_transactions_df = past_transactions_df[past_transactions_df["Datetime"] >= datetime(last_month_date.year, last_month_date.month, last_month_date.day)]
     # Combine currently fetched transactions with past transactions
     transactions_df = pd.concat([transactions_df, past_transactions_df])
     # Only keep new transactions
@@ -221,13 +221,13 @@ def get_budget_df(league_id):
 # Run every morning. Will return None if no Free Agent Auction moves were made for the day.
 def get_faa_df(league_id):
     # Check date
-    current_date = datetime.now().strftime("%A, %B %d, %Y")
+    current_date_string = datetime.now().strftime("%A, %B %d, %Y")
     url = 'http://games.espn.com/ffl/waiverreport?leagueId=' + str(league_id)
     r = get(url)
     soup = BeautifulSoup(r.text, 'html.parser')
-    date = soup.select_one('em').text
+    date_string = soup.select_one('em').text
 
-    if date != current_date:
+    if date_string != current_date_string:
         return None
 
     table = soup.select_one('table.tableBody')

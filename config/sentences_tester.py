@@ -2,8 +2,8 @@ from sentences import *
 
 # Setup
 
-team1 = "Hit the Quon"
-team2 = "Relegate Lurie"
+team1 = "BULO"
+team2 = "SHAR"
 player1 = "Doug Martin"
 position1 = "RB"
 player2 = "Kirk Cousins"

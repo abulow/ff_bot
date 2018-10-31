@@ -5,19 +5,23 @@ import sys
 from config.league_settings import *
 from config.sentences import *
 from config.twitter_login import *
+from datetime import datetime
 
 def print_tweet_error(new_sentence):
     print()
     print("There was an error tweeting the following sentence:")
     print(new_sentence)
-    print()
 
 def print_tweet_length_limit_exceeded(new_sentence):
-    print()
     new_sentence_length = len(new_sentence)
+    print()
     print("The following sentence was " + str(new_sentence_length) + " characters and was not tweeted:")
     print(new_sentence)
+
+def print_tweet(new_sentence):
     print()
+    print('New Tweet - Timestamp: {:%Y-%m-%d %H:%M:%S}'.format(datetime.now()))
+    print(new_sentence)
 
 def tweet_trade(api, row):
     if row.Transaction == 'Accepted Trade':
@@ -30,6 +34,7 @@ def tweet_trade(api, row):
                 print_tweet_length_limit_exceeded(new_sentence)
         try:
             api.update_status(new_sentence)
+            print_tweet(new_sentence)
         except:
             print_tweet_error(new_sentence)
 
@@ -43,6 +48,7 @@ def tweet_add_drop_waiver(api, row):
             print_tweet_length_limit_exceeded(new_sentence)
     try:
         api.update_status(new_sentence)
+        print_tweet(new_sentence)
     except:
         print_tweet_error(new_sentence)
 
@@ -56,6 +62,7 @@ def tweet_add_drop(api, row):
             print_tweet_length_limit_exceeded(new_sentence)
     try:
         api.update_status(new_sentence)
+        print_tweet(new_sentence)
     except:
         print_tweet_error(new_sentence)
 
@@ -69,6 +76,7 @@ def tweet_add(api, row):
             print_tweet_length_limit_exceeded(new_sentence)
     try:
         api.update_status(new_sentence)
+        print_tweet(new_sentence)
     except:
         print_tweet_error(new_sentence)
 
@@ -82,6 +90,7 @@ def tweet_drop(api, row):
             print_tweet_length_limit_exceeded(new_sentence)
     try:
         api.update_status(new_sentence)
+        print_tweet(new_sentence)
     except:
         print_tweet_error(new_sentence)
 
@@ -115,6 +124,7 @@ def tweet_score(api, row, week_num):
             print_tweet_length_limit_exceeded(new_sentence)
     try:
         api.update_status(new_sentence)
+        print_tweet(new_sentence)
     except:
         print_tweet_error(new_sentence)
 
