@@ -17,6 +17,7 @@ def run():
         if (i % 15) == 0:
             print()
             print('Updated, Timestamp: {:%Y-%m-%d %H:%M:%S}'.format(datetime.now()))
+        i += 1
         time.sleep(60)
 
 if __name__ == '__main__':
