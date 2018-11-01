@@ -161,4 +161,5 @@ def clean_sentence(sentence, team1='', team2='', player1='', position1='', playe
     new_sentence = new_sentence.replace("losing_losses_template", losing_losses)
     new_sentence = new_sentence.replace('  ', ' ')
     new_sentence = new_sentence.replace(' .', '.')
+    new_sentence = new_sentence.strip(' ')
     return new_sentence
