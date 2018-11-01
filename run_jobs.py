@@ -9,9 +9,8 @@ def run():
     remaining_scoreboard_start_times = [x for x in scoreboard_start_times if x > datetime.now()]
     while datetime.now() < end_of_season:
         run_bot('transactions')
-        first_remaining_scoreboard_start_time = remaining_scoreboard_start_times[0]
-        if remaining_scoreboard_start_times and (datetime.now() > first_remaining_scoreboard_start_time):
-            week_num = week_nums[first_remaining_scoreboard_start_time]
+        if remaining_scoreboard_start_times and (datetime.now() > remaining_scoreboard_start_times[0]):
+            week_num = week_nums[remaining_scoreboard_start_times[0]]
             run_bot('scores', week_num=week_num)
             remaining_scoreboard_start_times = remaining_scoreboard_start_times[1:]
         print()
