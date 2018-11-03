@@ -147,15 +147,15 @@ def get_transactions_df(league_id, year, abbrevs):
     
     # Reference past transactions csv
     past_transactions_df = pd.read_csv(past_transactions_csv_fn, parse_dates=['Datetime'], index_col=False)
-    # Remove transactions more than 30 days old from past_transactions_df
-    past_transactions_df = past_transactions_df[past_transactions_df["Datetime"] >= datetime(last_month_date.year, last_month_date.month, last_month_date.day)]
-    # Combine currently fetched transactions with past transactions
-    transactions_df = pd.concat([transactions_df, past_transactions_df])
+
     # Only keep new transactions
-    transactions_df = transactions_df.drop_duplicates(keep=False)
+    transactions_df_merged_with_indicator = transactions_df.merge(past_transactions_df.drop_duplicates(), how='left', indicator=True)
+    transactions_df = transactions_df_merged_with_indicator[transactions_df_merged_with_indicator['_merge'] == 'left_only']
+
     if transactions_df.empty:
         return None
     else:
+        pd.options.mode.chained_assignment = None
         transactions_df['Team1'] = transactions_df.apply(lambda x: parse_team1_abbrev(x.Description), axis=1)
         transactions_df['Team2'] = transactions_df.apply(lambda x: parse_team2_abbrev(x.Description) if 'Trade' in x.Transaction else np.NaN, axis=1)
         transactions_df['Team1_Traded_Players'] = transactions_df.apply(lambda x: parse_trade_team1_players(x.Description) if 'Trade' in x.Transaction else np.NaN, axis=1)
