@@ -7,6 +7,7 @@ def run():
     scoreboard_start_times = [first_scoreboard_start_time + timedelta(weeks=i) for i in range(16)]
     week_nums = {x: str(idx+1) for idx, x in enumerate(scoreboard_start_times)}
     remaining_scoreboard_start_times = [x for x in scoreboard_start_times if x > datetime.now()]
+    end_of_season = first_scoreboard_start_time + timedelta(weeks=15) + timedelta(minutes=5)
     i = 0
     while datetime.now() < end_of_season:
         run_bot('transactions')

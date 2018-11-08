@@ -129,7 +129,7 @@ def tweet_score(api, row, week_num):
         print_tweet_error(new_sentence)
 
 def tweet_scores(api, week_num):
-    scoreboard_df = get_scoreboard_df(league_id, year, week)
+    scoreboard_df = get_scoreboard_df(league_id, year, int(week_num))
     for idx, row in scoreboard_df.iterrows():
         tweet_score(api, row, week_num)
 

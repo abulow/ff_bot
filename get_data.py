@@ -40,14 +40,10 @@ def get_scoreboard_df(league_id, year, week):
     # Updating Wins and Losses based on this week's result
     for matchup_dict in scoreboard_list_of_dicts:
         if matchup_dict['Winner'] == matchup_dict['Home_Team']:
-            matchup_dict['Home_Wins'] += 1
-            matchup_dict['Away_Losses'] += 1
             for col in cols:
                 matchup_dict['Winning_' + col] = str(matchup_dict['Home_' + col])
                 matchup_dict['Losing_' + col] = str(matchup_dict['Away_' + col])
         else:
-            matchup_dict['Away_Wins'] += 1
-            matchup_dict['Home_Losses'] += 1
             for col in cols:
                 matchup_dict['Winning_' + col] = str(matchup_dict['Away_' + col])
                 matchup_dict['Losing_' + col] = str(matchup_dict['Home_' + col])
