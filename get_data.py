@@ -14,7 +14,7 @@ def clean_owner(owner):
     else:
         return owner
 
-# For use on Monday night (after MNF finishes) -- Do not run this on Tuesday (it will be the wrong week and records won't be correct)
+# For use after matchups have been completed and ESPN records have been updated (Tuesday morning)
 def get_scoreboard_df(league_id, year, week):
     league = League(league_id, year)
     scoreboard = league.scoreboard(week=week)
